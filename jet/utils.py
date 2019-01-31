@@ -72,9 +72,12 @@ def get_app_list(context, order=True):
         if has_module_perms:
             perms = model_admin.get_model_perms(request)
 
+            print('permss', perms)
+
             # Check whether user has any perm for this module.
             # If so, add the module to the model_list.
             if True in perms.values():
+                print('X', True)
                 info = (app_label, model._meta.model_name)
                 model_dict = {
                     'name': capfirst(model._meta.verbose_name_plural),
@@ -82,6 +85,8 @@ def get_app_list(context, order=True):
                     'perms': perms,
                     'model_name': model._meta.model_name
                 }
+                print(model_dict)
+                print(perms.get('change', False), perms.get('view', False))
                 if perms.get('change', False) or perms.get('view', False):
                     try:
                         model_dict['admin_url'] = reverse('admin:%s_%s_changelist' % info, current_app=admin_site.name)
