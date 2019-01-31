@@ -349,7 +349,13 @@ def get_menu_items(context):
                 item['url_blank'] = data['url_blank']
 
             if 'permissions' in data:
-                item['has_perms'] = item.get('has_perms', True) and context['user'].has_perms(data['permissions'])
+                has_any_perm = False
+                if item.get('has_perm', True):
+                    for perm in data['permissions']:
+                        if context['user'].has_perm(perm):
+                            has_any_perm = True
+                # item['has_perms'] = item.get('has_perms', True) and context['user'].has_perms(data['permissions'])
+                item['has_perms'] = item.get('has_perms', True) and has_any_perm
 
             return item
 
@@ -379,7 +385,13 @@ def get_menu_items(context):
                 item['url_blank'] = data['url_blank']
 
             if 'permissions' in data:
-                item['has_perms'] = item.get('has_perms', True) and context['user'].has_perms(data['permissions'])
+                has_any_perm = False
+                if item.get('has_perm', True):
+                    for perm in data['permissions']:
+                        if context['user'].has_perm(perm):
+                            has_any_perm = True
+                item['has_perms'] = item.get('has_perms', True) and has_any_perm
+                # item['has_perms'] = item.get('has_perms', True) and context['user'].has_perms(data['permissions'])
 
             item['pinned'] = item['app_label'] in pinned_apps
 
